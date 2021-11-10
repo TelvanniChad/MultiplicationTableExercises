@@ -1,7 +1,9 @@
 # MultiplicationTableExercises
 64 multiplication exercises from `2 * 2` to `9 * 9` presented in random order.
 
-How to use:
+[Link to use Multiplication Table Exercises online](https://telvannichad.github.io/MultiplicationTableExercises/MultiplicationTableExercises.html)
+
+How to use Multiplication Table Exercises offline:
 * Click Code => Download ZIP
 * Extract `MultiplicationTableExercises.html` from downloaded zip file
 * Open `MultiplicationTableExercises.html` in your web browser
