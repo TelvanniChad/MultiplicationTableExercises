@@ -173,7 +173,7 @@
 
         const input = currentExerciseElement.getElementsByTagName('input')[0];
         input.focus();
-        input.addEventListener('keydown', e => {
+        input.addEventListener('keydown', function (e) {
           if (e.code === "Enter" || e.code === "NumpadEnter") {
             showNextRandomExercise();
           };
@@ -191,10 +191,10 @@
           <span class="correct-answers">${correctAnswers}</span> :
           <span class="incorrect-answers">${incorrectAnswers}</span>
         `;
-        [].forEach.call(document.getElementsByClassName('exercise-number'), item => item.style.visibility = 'visible');
-        [].forEach.call(document.getElementsByClassName('hidden-answers'), item => item.style.display = 'initial');
-        [].forEach.call(document.getElementsByClassName('correct-exercise'), item => item.style.backgroundColor = '#adffb2');
-        [].forEach.call(document.getElementsByClassName('incorrect-exercise'), item => item.style.backgroundColor = '#ffeded');
+        [].forEach.call(document.getElementsByClassName('exercise-number'), function (item) { item.style.visibility = 'visible'; });
+        [].forEach.call(document.getElementsByClassName('hidden-answers'), function (item) { item.style.display = 'initial'; });
+        [].forEach.call(document.getElementsByClassName('correct-exercise'), function (item) { item.style.backgroundColor = '#adffb2'; });
+        [].forEach.call(document.getElementsByClassName('incorrect-exercise'), function (item) { item.style.backgroundColor = '#ffeded'; });
       };
     };
 
