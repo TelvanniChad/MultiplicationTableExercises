@@ -19,7 +19,8 @@
 
 [Link to use Subtraction Exercises for old browsers online](https://telvannichad.github.io/MultiplicationTableExercises/SEforOldBrowsers.html)
 
-# Versions for older browsers are tested in Internet Explorer 8 and Android Browser of Android 2.3.3
+# Versions for older browsers
+Versions for older browsers are tested in Internet Explorer 8 and Android Browser of Android 2.3.3
 
 # How to use any Exercises offline:
 * Click Code => Download ZIP
