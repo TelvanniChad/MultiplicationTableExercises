@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <title>Addition Exercises</title>
+    <style>
+      body {
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      input {
+        font-size: 40px;
+        border: 2px black solid;
+        border-radius: 10px;
+        outline: none;
+        text-align: center;
+        width: 150px;
+      }
+
+      p {
+        font-size: 50px;
+        padding-bottom: 10px;
+      }
+
+      #progress {
+        top: 1px;
+        right: 50px;
+        width: 150px;
+        height: 50px;
+        position: fixed;
+        text-align: center;
+        font-size: 30px;
+        padding-top: 10px;
+      }
+
+      #results {
+        font-size: 50px;
+        background-color: white;
+        padding-top: 40px;
+        display: none;
+      }
+
+      #startButton {
+        height: 50px;
+        width: 300px;
+        font-size: 30px;
+        margin-top: 10px;
+        border-radius: 15px;
+        outline: none;
+        color: green;
+      }
+
+      #timer {
+        top: 1px;
+        left: 50px;
+        width: 150px;
+        height: 50px;
+        position: fixed;
+        text-align: center;
+        font-size: 30px;
+        padding-top: 10px;
+      }
+
+      .correct-answers {
+        color: green;
+      }
+
+      .exercise-number {
+        visibility: hidden;
+        float: left;
+        font-size: 30px;
+        margin-left: 10px;
+      }
+
+      .footer {
+        height: 100px;
+        width: 100%;
+      }
+
+      .hidden-answers {
+        color: grey;
+        display: none;
+      }
+
+      .incorrect-answers {
+        color: red;
+      }
+
+      .ok-button {
+        margin-left: 10px;
+        font-size: 35px;
+        border-radius: 15px;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="timer">
+      <span id="minutes">00</span> : <span id="seconds">00</span>
+    </div>
+    <div id="progress">
+      <span id="currentExerciseNumber">0</span> / <span id="exercisesTotalAmount"></span>
+    </div>
+    <div>
+      <button id="startButton" onclick="start()">S T A R T</button>
+    </div>
+    <div id="exercises"></div>
+    <div id="results" class="footer"></div>
+    <div class="footer"></div>
+  </body>
+  <script type="text/javascript">
+    function getElementsByClassName(className) {
+      var elements = [];
+      if (document.getElementsByClassName) {
+        elements = document.getElementsByClassName(className);
+      } else {
+        elements = document.querySelectorAll("." + className);
+      };
+      return elements;
+    };
+
+    function showNextRandomExercise() {
+      // if it is not first exercise
+      if (currentExerciseElement) {
+        var input = currentExerciseElement.getElementsByTagName('input')[0];
+        // if input is not empty
+        if (input.value) {
+          // remove OK button
+          currentExerciseElement.getElementsByTagName('button')[0].style.display = 'none';
+          // replace input with its value
+          input.style.display = 'none';
+          currentExerciseElement.getElementsByTagName('span')[0].appendChild(document.createTextNode(input.value));
+          // if answer is correct
+          if (parseInt(input.value) === currentAnswer) {
+            correctAnswers += 1;
+            currentExerciseElement.className = "correct-exercise";
+          } else {
+            incorrectAnswers += 1;
+            currentExerciseElement.className = "incorrect-exercise";
+          };
+        } else {
+          // if input is empty
+          return;
+        };
+      };
+
+      // if any exercises remained
+      if (exercises.length > 0) {
+        // get random exercise
+        var exercise = exercises.splice(Math.floor(Math.random() * exercises.length), 1)[0];
+        currentAnswer = exercise.sm;
+        currentExerciseNumber += 1;
+        currentExerciseNumberEl.innerHTML = currentExerciseNumber;
+
+        currentExerciseElement = document.createElement('p');
+        // HTML code of exercise
+        currentExerciseElement.appendChild(document.createTextNode(exercise.sd1 + " + " + exercise.sd2 + " = "));
+        var input = document.createElement('input');
+        currentExerciseElement.appendChild(input);
+        currentExerciseElement.appendChild(document.createElement('span'));
+        var span1 = document.createElement('span');
+        span1.className = "hidden-answers";
+        span1.appendChild(document.createTextNode(" (" + exercise.sm + ")"));
+        currentExerciseElement.appendChild(span1);
+        var span2 = document.createElement('span');
+        span2.className = "exercise-number";
+        span2.appendChild(document.createTextNode(currentExerciseNumber));
+        currentExerciseElement.appendChild(span2);
+        var button = document.createElement('button');
+        button.className = "ok-button";
+        if (button.addEventListener) {
+          button.addEventListener("click", showNextRandomExercise);
+        } else {
+          button.attachEvent("onclick", showNextRandomExercise);
+        };
+        button.appendChild(document.createTextNode("OK"));
+        currentExerciseElement.appendChild(button);
+        exercisesEl.appendChild(currentExerciseElement);
+        currentExerciseElement.scrollIntoView();
+      } else {
+        // all exercises are done
+        clearTimeout(timerTimeout);
+        var span1 = document.createElement('span');
+        span1.className = "correct-answers";
+        span1.appendChild(document.createTextNode(correctAnswers));
+        results.appendChild(span1);
+        results.appendChild(document.createTextNode(" : "));
+        var span2 = document.createElement('span');
+        span2.className = "incorrect-answers";
+        span2.appendChild(document.createTextNode(incorrectAnswers));
+        results.appendChild(span2);
+        results.style.display = 'inline';
+        var exerciseNumbers = getElementsByClassName('exercise-number');
+        for (var i = 0; i < exerciseNumbers.length; i++) {
+          exerciseNumbers[i].style.visibility = 'visible';
+        };
+        var hiddenAnswers = getElementsByClassName('hidden-answers');
+        for (var i = 0; i < hiddenAnswers.length; i++) {
+          hiddenAnswers[i].style.display = 'inline';
+        };
+        var correctExercises = getElementsByClassName('correct-exercise');
+        for (var i = 0; i < correctExercises.length; i++) {
+          correctExercises[i].style.backgroundColor = '#adffb2';
+        };
+        var incorrectExercises = getElementsByClassName('incorrect-exercise');
+        for (var i = 0; i < incorrectExercises.length; i++) {
+          incorrectExercises[i].style.backgroundColor = '#ffeded';
+        };
+      };
+    };
+
+    function printTimeSpent() {
+      var timeSpent = Math.floor((new Date - startTime) / 1000);
+      var m = Math.floor(timeSpent / 60);
+      var s = timeSpent % 60;
+
+      while (minutes.firstChild) {
+        minutes.removeChild(minutes.lastChild);
+      };
+      while (seconds.firstChild) {
+        seconds.removeChild(seconds.lastChild);
+      };
+
+      if (m < 100) {
+        if (m < 10) {
+          minutes.appendChild(document.createTextNode('0' + m));
+        } else {
+          minutes.appendChild(document.createTextNode(m.toString()));
+        };
+
+        if (s < 10) {
+          seconds.appendChild(document.createTextNode('0' + s));
+        } else {
+          seconds.appendChild(document.createTextNode(s.toString()));
+        };
+      } else {
+        minutes.appendChild(document.createTextNode('99'));
+        seconds.appendChild(document.createTextNode('59'));
+      };
+
+      timerTimeout = setTimeout(printTimeSpent, 1000);
+    };
+
+    function start() {
+      clearTimeout(timerTimeout);
+      // reset some values
+      while (exercisesEl.firstChild) {
+        exercisesEl.removeChild(exercisesEl.lastChild);
+      };
+      while (results.firstChild) {
+        results.removeChild(results.lastChild);
+      };
+      correctAnswers = 0;
+      currentAnswer = null;
+      currentExerciseElement = null;
+      currentExerciseNumber = 0;
+      exercises = JSON.parse(exercisesTemplate);
+      incorrectAnswers = 0;
+      // start exercises
+      showNextRandomExercise();
+      startTime = new Date();
+      printTimeSpent();
+    };
+
+    var currentExerciseNumberEl = document.getElementById('currentExerciseNumber');
+    var exercisesEl = document.getElementById('exercises');
+    var minutes = document.getElementById('minutes');
+    var results = document.getElementById('results');
+    var seconds = document.getElementById('seconds');
+
+    // create exercises
+    var eT = [];
+    for (var i = 1; i <= 9; i++) {
+      for (var j = 1; j <= 9; j++) {
+        // sd1 => first summand, sd2 => second summand, sm => sum
+        eT.push({sd1: i, sd2: j, sm: i + j});
+      };
+    };
+    var exercisesTemplate = JSON.stringify(eT);
+    document.getElementById('exercisesTotalAmount').appendChild(document.createTextNode(eT.length));
+
+    var correctAnswers = 0;
+    var currentAnswer = null;
+    var currentExerciseElement = null;
+    var currentExerciseNumber = 0;
+    var exercises = null;
+    var incorrectAnswers = 0;
+    var startTime = null;
+    var timerTimeout = null;
+  </script>
+</html>
